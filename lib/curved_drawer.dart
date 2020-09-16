@@ -58,7 +58,8 @@ class _CurvedDrawerState extends State<CurvedDrawer>
   int _endingIndex = 0;
   double _pos;
   double _buttonHide = 0;
-  DrawerNavItem _icon;
+  DrawerNavItem _image;
+  TextStyle textStyle;
   AnimationController _animationController;
   int _length;
   int _isEnd;
@@ -68,15 +69,16 @@ class _CurvedDrawerState extends State<CurvedDrawer>
   void initState() {
     super.initState();
     _items = widget.items.map((item) {
-      DrawerNavItem(
-        icon: item.icon,
+      return DrawerNavItem(
+        image: item.image,
+        textStyle: item.textStyle,
         label: item.label,
         color: widget.labelColor,
         background: widget.buttonBackgroundColor,
         size: widget.width / 3,
       );
     }).toList();
-    _icon = _items[widget.index];
+    _image = _items[widget.index];
     _length = _items.length;
     _pos = widget.index / _length;
     _startingPos = _pos;
@@ -88,7 +90,7 @@ class _CurvedDrawerState extends State<CurvedDrawer>
         final endingPos = _endingIndex / widget.items.length;
         final middle = (_startingPos + endingPos) / 2;
         if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
-          _icon = _items[_endingIndex];
+          _image = _items[_endingIndex];
         }
         _buttonHide =
             (1 - ((middle - _pos) / (_startingPos - middle)).abs()).abs();
@@ -142,7 +144,7 @@ class _CurvedDrawerState extends State<CurvedDrawer>
                             (75 + (widget.width * 0.2)),
                         0,
                       ),
-                      child: _icon)),
+                      child: _image)),
             ),
             Positioned(
                 top: 0,
@@ -177,7 +179,7 @@ class _CurvedDrawerState extends State<CurvedDrawer>
                       width: widget.width,
                       color: widget.labelColor,
                       index: _items.indexOf(item),
-                      icon: item.icon,
+                      image: item.image,
                     );
                   }).toList())),
             ),
@@ -205,9 +207,11 @@ class _CurvedDrawerState extends State<CurvedDrawer>
 
 class DrawerItem {
   final String label;
-  final Icon icon;
+  final String image;
+  final TextStyle textStyle;
   const DrawerItem({
     this.label = "",
-    @required this.icon,
-  }) : assert(icon != null);
+    this.textStyle,
+    @required this.image,
+  }) : assert(image != null);
 }

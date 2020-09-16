@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class DrawerNavItem extends StatelessWidget {
-  final Icon icon;
+  final String image;
   final String label;
+  final TextStyle textStyle;
   final double size;
   final Color color;
   final Color background;
 
   const DrawerNavItem(
       {Key key,
-      @required this.icon,
+      @required this.image,
       this.label = "",
       this.size = 25.0,
       this.color = Colors.black54,
+      this.textStyle,
       this.background = Colors.white})
       : super(key: key);
 
@@ -30,15 +32,23 @@ class DrawerNavItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: this.label.isNotEmpty
               ? <Widget>[
-                  Icon(this.icon.icon, size: this.size, color: this.color),
+                  Image.asset(
+                    image,
+                    width: 25,
+                    height: 25,
+                  ),
                   SizedBox(width: 5),
                   Text(
                     label,
-                    style: TextStyle(color: this.color),
+                    style: textStyle ?? TextStyle(color: this.color),
                   ),
                 ]
               : <Widget>[
-                  Icon(this.icon.icon, size: this.size, color: this.color),
+                  Image.asset(
+                    image,
+                    width: 25,
+                    height: 25,
+                  ),
                 ],
         ),
       ),
@@ -54,7 +64,7 @@ class NavButton extends StatelessWidget {
   final double width;
   final Color color;
   final ValueChanged<int> onTap;
-  final Icon icon;
+  final String image;
 
   NavButton(
       {this.onTap,
@@ -64,7 +74,7 @@ class NavButton extends StatelessWidget {
       this.width,
       this.color,
       this.index,
-      this.icon});
+      this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +90,7 @@ class NavButton extends StatelessWidget {
         },
         child: Container(
             width: this.width,
+            alignment: Alignment.center,
             child: Transform.translate(
               offset: Offset(
                   difference < 1.0 / length
@@ -88,9 +99,10 @@ class NavButton extends StatelessWidget {
                   0),
               child: Opacity(
                   opacity: difference < 1.0 / length * 0.99 ? opacity : 1.0,
-                  child: Icon(
-                    icon.icon,
-                    color: this.color,
+                  child: Image.asset(
+                    image,
+                    width: 50.0,
+                    height: 50.0,
                   )),
             )),
       ),
